@@ -3,18 +3,30 @@
 Agenda web de reservas de LookMe Studio (cejas y pestañas), hecha por **Redyz · By Marypaz Cadavid**.
 
 - **Clientas:** https://jcmarypaz-web.github.io/agenda-lookme-studio/
-- **Panel de la secretaria:** https://jcmarypaz-web.github.io/agenda-lookme-studio/#panel-secretaria-lookme
+- **Panel de la secretaria:** https://jcmarypaz-web.github.io/agenda-lookme-studio/panel.html
 
 ## Cómo funciona
 
-1. La clienta elige semana → artista → día → hora, acepta las políticas y envía su solicitud por WhatsApp (+57 301 292 7656).
+1. La clienta elige semana → artista → día → hora, acepta las políticas y envía su solicitud por WhatsApp.
 2. La cita **solo se confirma por WhatsApp** después del abono.
-3. La secretaria entra al panel con su correo y contraseña (Firebase Authentication) y toca los horarios para marcarlos como reservados. Se tachan al instante en la página de las clientas.
+3. La secretaria entra a `panel.html` con su correo y contraseña (Firebase Authentication). El panel tiene:
+   - **Agenda:** por día o por artista; registrar citas con datos de la clienta, bloquear o liberar horarios.
+   - **Clientas:** CRM con ficha, teléfono, cumpleaños, notas e historial de visitas.
+   - **Horarios:** calendario para habilitar días, cambiar horas por artista, marcar "próximamente" o cerrar.
+   - **Artistas:** fotos, frase, orden y estado (activa, próximamente, oculta).
+   - **Portada y ajustes:** textos, foto de portada, WhatsApp, Instagram, catálogo, abono, políticas y modo Navidad.
 
-## Dónde se edita
+## Archivos
 
-Todo está en `index.html`:
+- `index.html` + `js/clientas.js`: página pública.
+- `panel.html` + `js/panel.js`: panel de la secretaria.
+- `js/datos.js`: conexión a Firebase (Firestore + Authentication).
+- `js/semilla.js`: datos iniciales de LookMe (se cargan solos la primera vez que la secretaria entra con la base vacía).
+- `js/firebase-config.js`: proyecto `agenda-lookme-studio`.
+- `css/estilos.css` y `css/panel.css`: tema beige, café claro y dorado (Julius Sans One + Poppins).
 
-- `TEMA DE MARCA` (CSS `:root`): colores y tipografías.
-- `CONFIG DE LA CLIENTA` (script): WhatsApp, Instagram, catálogo, abono, artistas, semanas, horarios (`HORARIO`, `HORARIO_ARTISTA`, `HORAS_FIJAS`), políticas y textos.
-- `FIREBASE_CONFIG`: proyecto `agenda-lookme-studio`. Las reglas de Firestore permiten leer a todos y escribir solo a usuarias con sesión iniciada. El registro libre está desactivado: las cuentas se crean en Firebase → Authentication → Usuarios.
+## Seguridad (reglas de Firestore)
+
+- Públicas (solo lectura): `config`, `artistas`, `dias`, `ocupados` (sin datos personales).
+- Privadas: `citas` y `clientas`; solo usuarias con sesión iniciada.
+- El registro libre está desactivado: las cuentas se crean en Firebase → Authentication → Usuarios.
